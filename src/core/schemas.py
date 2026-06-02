@@ -87,7 +87,7 @@ class AgentResult(BaseModel):
     query: str
     final_answer: str
     tool_calls: list[ToolCallRecord] = Field(default_factory=list)
-    provider: str = "google"
+    provider: str = "openai"
     model_name: str | None = None
     saved_order: dict[str, Any] | None = None
     saved_order_path: str | None = None

@@ -1,8 +1,10 @@
 .env
 .venv/
+venv/
 .pytest_cache/
 __pycache__/
 *.pyc
+*.egg-info/
 .DS_Store
 
 # Keep the student lab package lean

@@ -28,15 +28,24 @@ def normalize_content(raw: Any) -> str:
 
 def build_chat_model(
     *,
-    provider: str = "google",
+    provider: str = "openai",
     model_name: str | None = None,
     temperature: float = 0.0,
 ):
+    if provider == "openai":
+        from langchain_openai import ChatOpenAI
+
+        return ChatOpenAI(
+            model=model_name or os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
+            temperature=temperature,
+            api_key=os.getenv("OPENAI_API_KEY"),
+            max_retries=5,
+        )
     if provider == "google":
         from langchain_google_genai import ChatGoogleGenerativeAI
 
         return ChatGoogleGenerativeAI(
-            model=model_name or os.getenv("LLM_MODEL", "gemini-2.5-flash"),
+            model=model_name or os.getenv("GOOGLE_MODEL", "gemini-2.5-flash"),
             temperature=temperature,
             google_api_key=os.getenv("GOOGLE_API_KEY"),
         )
@@ -48,7 +57,7 @@ def build_chat_model(
             base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
             temperature=temperature,
         )
-    raise ValueError("This lab supports only the `google` and `ollama` providers.")
+    raise ValueError("This lab supports only the `openai`, `google`, and `ollama` providers.")
 
 
 def extract_json_object(raw: Any) -> dict[str, Any]:
